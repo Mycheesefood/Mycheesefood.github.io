@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Endless Runner Game</title>
+    <style>
+        /* Example styles */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        canvas {
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="800" height="400"></canvas>
+
+    <script>
+        // Get the canvas and context
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Game variables
+        let playerX = 50; // Initial player position
+        let playerY = canvas.height / 2;
+        let obstacleX = canvas.width; // Initial obstacle position
+        let obstacleWidth = 20;
+        let obstacleSpeed = 5; // Speed at which obstacles move left
+        let isGameOver = false;
+
+        // Game loop
+        function gameLoop() {
+            if (!isGameOver) {
+                update();
+                draw();
+                requestAnimationFrame(gameLoop);
+            }
+        }
+
+        function update() {
+            // Update player position or other game logic here
+            playerX += 1; // Example: move player right
+            obstacleX -= obstacleSpeed; // Move obstacle left
+
+            // Check for collision
+            if (checkCollision()) {
+                gameOver();
+            }
+        }
+
+        function draw() {
+            // Clear the canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw player
+            ctx.fillStyle = 'blue';
+            ctx.fillRect(playerX, playerY, 50, 50); // Example: draw a simple player square
+
+            // Draw obstacle
+            ctx.fillStyle = 'red';
+            ctx.fillRect(obstacleX, playerY, obstacleWidth, 50); // Example: draw a simple obstacle square
+        }
+
+        function checkCollision() {
+            // Example collision detection logic
+            if (playerX < obstacleX + obstacleWidth &&
+                playerX + 50 > obstacleX &&
+                playerY < playerY + 50 &&
+                playerY + 50 > playerY) {
+                return true;
+            }
+            return false;
+        }
+
+        function gameOver() {
+            isGameOver = true;
+            // Game over logic, e.g., show score, restart button, etc.
+        }
+
+        // Event listener for key presses (example)
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowUp') {
+                playerY -= 10; // Example: move player up
+            } else if (event.key === 'ArrowDown') {
+                playerY += 10; // Example: move player down
+            }
+        });
+
+        // Start the game loop
+        gameLoop();
+    </script>
+</body>
+</html>
